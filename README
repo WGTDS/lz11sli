@@ -1,0 +1,157 @@
+#####################################################################
+
+    LZ11 SLI
+
+    "White Guy That Don't Smile"
+    2021/06/19, Saturday, June 19th; 2259 HOURS
+
+#####################################################################
+
+Preface:
+
+    From: "n64sdk/nintendo/n64kit/misc/slide_v1.1"
+          and
+          "RVL_SDK-3_3_2-20100730/X86/bin/"
+
+    Encoding functionality was recovered from a decompiled
+    executable by the name of "sliencw11.exe" using a reverse
+    software engineering suite, "Ghidra", and an x86 decompiler,
+    "Snowman".
+
+    Decoding functionality was transcribed from the "slidec.s"
+    assembler source.
+
+    Both instances correspond with the "Yay0" format -
+    an extension founded upon the limited predecessor,
+    and have been adapted to support the length definitions
+    specified by Makoto Takano with "ntcompress.exe".
+
+#####################################################################
+
+Description:
+
+    This is an experimental tool for implementing a greater
+    extension for the SLI algorithm's match length capabilities.
+    It performs best on data with very high redundancy.
+    (dictionary size is still 12 bits amusingly enough!)
+
+    SLI [Original : MIO0/SMSR00] -->     18
+    SLI [Extended : Yay0/Yaz0]   -->    273
+    SLI [Modified : 0x11]        --> 65,808
+
+    Using a screenshot of the very start of the classic
+    Super Mario Bros. 1-1 with dimensions of 2048x1920
+    and 24-bit colour depth, totaling 11,796,536 bytes
+    in size, the results are as follows:
+
+    Yaz0:              145,845
+    0x11 [SLI]:         22,562
+    0x11 [ntcompress]:  23,517
+
+    The difference is negligible, but 955 bytes of data
+    were saved using the modified SLI algorithm.
+    At any rate, the capabilities are most pronounced
+    when compared to the last SLI extension from the 1990s!
+
+#####################################################################
+
+Instructions:
+
+    I used GCC to build this on 64-bit Linux, Mac, and Windows,
+    and have provided a Makefile that may serve as a convenience.
+
+Ensure the following subdirectories exist within the path "lz11sli":
+"bin"
+"include"
+"obj"
+"src"
+_____________________________________________________________________
+Confirm the following files are present within these subdirectories:
+"libsli"
+    "include"
+        "lz11sli.h"
+    "src"
+        "dszslz11.c"
+        "eszslz11.c"
+        "lz11sli.c"
+        "search.c"
+        "utils.c'
+    "LICENSE"
+    "Makefile"
+    "README"
+_____________________________________________________________________
+"cd" into the work directory that is "lz11sli" and type "make".
+
+The "make" command will build "lz11sli".
+
+The "make clean" command will remove all files from the
+"bin" and "obj" subdirectories.
+_____________________________________________________________________
+
+Interface:
+
+"lz11sli.h" is required! Inspect its contents.
+
+"dszslz11.c" : decoding routine for extended SLI encoded data.
+
+"eszslz11.c" : encoding routine for generating extended SLI data.
+
+"search.c" contains the required search routine for encoding.
+
+"utils.c" contain byte-swapping functions for 16 and 32-bit data.
+It should be noted that SLI data is big-endian, therefore, the
+facilities provided regard little-endian host systems.
+
+"lz11sli.c" contains the "main()" function and will compile into the
+executable needed to process the data defined by this software.
+
+#####################################################################
+
+Motive:
+
+    After discovering the Wii SDK and the compression tool
+    within, it piqued my interest to see how its extended
+    length capabilities would perform using the SLI algorithm.
+
+#####################################################################
+
+Special Mentions:
+
+    Nintendo EAD & "Melody-Yoshi":
+        For doing something neat with the Lempel-Ziv compression
+        algorithm while simultaneously leaving the community
+        scratching their heads as to what the acronym "SLI" even
+        means for over a quarter of a century.
+
+    Makoto Takano of Nintendo:
+        Neat findings with "ntcompress.exe"!
+
+    Mike Hawk:
+        Always been there for me! Thanks, buddy!
+
+#####################################################################
+
+    Q: "Why is this separate from "libsli"?"
+    A: This is an unofficial, not to mention untested,
+       modification to the original SLI format.
+       It doesn't belong with that project.
+
+    Q: "Is it safe to use this modified format with a game?"
+    A: Best advice would be to proceed at your own risk.
+       I haven't tried my hand using MIPS ASM to implement
+       a modified SLI routine in any Nintendo 64 title seeing
+       as the data contained within those games are already
+       sufficiently compressed using the standard SLI algorithm
+       as it is.
+
+    Q: "Are there any perks to using this on the N64?"
+    A: Perhaps.
+       If there is a volume of data with enough redundancy,
+       this modification may be useful.
+       However, most ROM hackers and developers alike have
+       favored using GNU Zip instead considering it yields
+       a superior compression ratio compared to what was
+       available at the time with its combination of
+       Lempel-Ziv and Huffman coding.
+
+#####################################################################
