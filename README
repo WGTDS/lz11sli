@@ -67,7 +67,7 @@ Ensure the following subdirectories exist within the path "lz11sli":
 "src"
 _____________________________________________________________________
 Confirm the following files are present within these subdirectories:
-"libsli"
+"lz11sli"
     "include"
         "lz11sli.h"
     "src"
